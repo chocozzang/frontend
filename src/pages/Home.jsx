@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function Home() {
     const[users, setUsers] = useState([]);
@@ -19,9 +20,10 @@ function Home() {
             <thead>
                 <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">이름</th>
+                <th scope="col">유저명</th>
+                <th scope="col">이메일</th>
+                <th scope="col">액션</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +33,11 @@ function Home() {
                         <td>{user.name}</td>
                         <td>{user.username}</td>
                         <td>{user.email}</td>
+                        <td>
+                            <Link to="/viewUser" className="btn btn-outline-secondary mx-2">보기</Link>
+                            <Link to="/editUser" className="btn btn-outline-warning mx-2">수정</Link>
+                            <Link to="/" className="btn btn-outline-da mx-2">삭제</Link>
+                        </td>
                     </tr>
                 ))}
             </tbody>

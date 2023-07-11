@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 
 function Home() {
+    const[users, setUsers] = useState([]);
+
+    const loadUsers = async () => {
+        const result = await axios.get('http://localhost:8080/users');
+        console.log(result.data);
+        setUsers(result.data);
+    };
+
+    // 처음 한 번 실행함
+    useEffect(() => {loadUsers();}, []);
+
   return (
     <div className='container'>
-        <table class="table border shadow my-4">
+        <table className="table border shadow my-4">
             <thead>
                 <tr>
                 <th scope="col">#</th>
@@ -13,23 +25,14 @@ function Home() {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                </tr>
-                <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                </tr>
-                <tr>
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
-                </tr>
+                {users.map((user, index) => (
+                    <tr key={user.name}>
+                        <th scope="row">{index + 1}</th>
+                        <td>{user.name}</td>
+                        <td>{user.username}</td>
+                        <td>{user.email}</td>
+                    </tr>
+                ))}
             </tbody>
         </table>
     </div>

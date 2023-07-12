@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export const EditUser = () => {
   let navigate = useNavigate();
@@ -11,6 +11,19 @@ export const EditUser = () => {
     username : '',
     email    : ''
   });
+
+  //"/user/:id" 의 값이 "/user/123" 이면 id의 값으로 123을 받음
+  const { id } = useParams();
+
+  // await사용시 async을 함수 앞에 붙임
+  const loadUser = async () => {
+    const result = await axios.get(`http://localhost:8080/user/${id}`);
+    // console.log(result.data);
+    setUser(result.data);
+  };
+
+  // 처음 한 번 실행함
+  useEffect(() => {loadUser();}, user);
 
   const onInputChange = (e) => {
     e.preventDefault();
@@ -29,7 +42,7 @@ export const EditUser = () => {
   const onSubmit = async (e) => {
     e.preventDefault(); // submit 기능 중지시킴
     // 백엔드 서버로 user 데이터 전송
-    await axios.post('http://localhost:8080/user', user);
+    await axios.put(`http://localhost:8080/user/${id}`, user);
     // ** await : 요청에 대한 처리 결과를 기다릴 수 있도록 함 **
     navigate('/');
     // 바로 홈페이지로 이동시키도록 함 (홈페이지는 리스트를 조회하므로 등록된 유저 역시 나타남)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function Home() {
     const[users, setUsers] = useState([]);
@@ -14,6 +14,14 @@ function Home() {
     // 처음 한 번 실행함
     useEffect(() => {loadUsers();}, []);
 
+    const deleteUser = async (id) => {
+        if(window.confirm("삭제하시겠습니까?")) {
+            await axios.delete(`http://localhost:8080/user/${id}`);
+            loadUsers(); // 삭제 후에 user들을 새로 받아옴
+        }
+    }
+
+    // `/editUser/${user.id}`를 해두면, App.js의 Route에 매핑됨
   return (
     <div className='container'>
         <table className="table border shadow my-4">
@@ -34,10 +42,9 @@ function Home() {
                         <td>{user.username}</td>
                         <td>{user.email}</td>
                         <td>
-                            <Link to="/viewUser" className="btn btn-outline-secondary mx-2">보기</Link>
-                            <Link to={`/editUser/${user.id}`} className="btn btn-outline-warning mx-2">수정</Link>
-                            {/* `/editUser/${user.id}`를 해두면, App.js의 Route에 매핑됨 */}
-                            <Link to="/" className="btn btn-outline-da mx-2">삭제</Link>
+                            <Link to={`/viewUser/${user.uid}`} className="btn btn-outline-secondary mx-2">보기</Link>
+                            <Link to={`/editUser/${user.uid}`} className="btn btn-outline-warning mx-2">수정</Link>
+                            <button onClick={() => deleteUser(`${user.uid}`)} className="btn btn-outline-da mx-2">삭제</button>
                         </td>
                     </tr>
                 ))}

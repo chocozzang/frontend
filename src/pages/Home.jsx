@@ -35,7 +35,8 @@ function Home() {
                         <td>{user.email}</td>
                         <td>
                             <Link to="/viewUser" className="btn btn-outline-secondary mx-2">보기</Link>
-                            <Link to="/editUser" className="btn btn-outline-warning mx-2">수정</Link>
+                            <Link to={`/editUser/${user.id}`} className="btn btn-outline-warning mx-2">수정</Link>
+                            {/* `/editUser/${user.id}`를 해두면, App.js의 Route에 매핑됨 */}
                             <Link to="/" className="btn btn-outline-da mx-2">삭제</Link>
                         </td>
                     </tr>
